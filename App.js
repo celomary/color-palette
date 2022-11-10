@@ -1,20 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Home from "./screens/home.screen";
+import ColorScreen from "./screens/color.screen";
+import {StatusBar} from 'react-native'
+import ModalScreen from "./screens/modal.screen";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+const Stack = createStackNavigator();
+
+const App = () => {
+  return <>
+  <StatusBar barStyle={"dark-content"} />
+  <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Group>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name='Color' component={ColorScreen} 
+          options={({route}) => ({
+            title: route.params.title
+          })
+          }
+        />
+      </Stack.Group>
+      <Stack.Group screenOptions={{
+        presentation: 'modal'
+      }}>
+        <Stack.Screen name="Modal" component={ModalScreen} options={{
+          title:"Add New Palette"
+        }} />
+      </Stack.Group>
+    </Stack.Navigator>
+  </NavigationContainer>
+  </>
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
